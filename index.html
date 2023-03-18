@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el animal</title>
+    <style>
+        #resultado {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adivina el animal</h1>
+    <p id="pregunta"></p>
+    <button id="botonSi">Sí</button>
+    <button id="botonNo">No</button>
+    <div id="resultado"></div>
+
+    <script>
+        // Árbol de decisiones simple
+        const decisionTree = {
+            pregunta: '¿El animal vive en el agua?',
+            si: {
+                pregunta: '¿El animal es un mamífero?',
+                si: 'delfín',
+                no: 'pez'
+            },
+            no: {
+                pregunta: '¿El animal puede volar?',
+                si: 'pájaro',
+                no: 'perro'
+            }
+        };
+
+        const preguntaElement = document.getElementById('pregunta');
+        const resultadoElement = document.getElementById('resultado');
+        const botonSi = document.getElementById('botonSi');
+        const botonNo = document.getElementById('botonNo');
+
+        botonSi.addEventListener('click', () => responderPregunta(true));
+        botonNo.addEventListener('click', () => responderPregunta(false));
+
+        let nodoActual = decisionTree;
+
+        function mostrarPregunta() {
+            preguntaElement.textContent = nodoActual.pregunta;
+        }
+
+        function responderPregunta(respuestaSi) {
+            if (respuestaSi) {
+                if (typeof nodoActual.si === 'string') {
+                    resultadoElement.textContent = 'El animal es un ' + nodoActual.si + '.';
+                } else {
+                    nodoActual = nodoActual.si;
+                    mostrarPregunta();
+                }
+            } else {
+                if (typeof nodoActual.no === 'string') {
+                    resultadoElement.textContent = 'El animal es un ' + nodoActual.no + '.';
+                } else {
+                    nodoActual = nodoActual.no;
+                    mostrarPregunta();
+                }
+            }
+        }
+
+        mostrarPregunta();
+    </script>
+</body>
+</html>
